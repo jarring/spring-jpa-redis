@@ -17,10 +17,10 @@ public class UserInfoRepository {
 	private RedisTemplate<String, String> template; // inject the template as ListOperations
 
 	@Resource(name = "redisTemplate")
-	private HashOperations<UserInfo, Long, UserInfo> hashOperations;
+	private HashOperations<String, String, UserInfo> hashOperations;
 
 	public void save(UserInfo ui) {
-		hashOperations.put(ui, ui.getId(), ui);
+		hashOperations.put("userinfo:" + ui.getId(), String.valueOf(ui.getId()), ui);
 	}
 
 }

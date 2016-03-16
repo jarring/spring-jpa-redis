@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:p="http://www.springframework.org/schema/p"  
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context  
@@ -27,9 +26,30 @@
 
 	<bean id="jedisConnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		p:host-name="127.0.0.1" p:port="6379" />
+		p:host-name="192.168.56.1" p:port="6379" />
 
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-		p:connection-factory-ref="jedisConnectionFactory" />
-		
+		p:connection-factory-ref="jedisConnectionFactory">
+		<property name="KeySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+		</property>
+		<property name="ValueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer">
+				<constructor-arg type="java.lang.Class" value="java.lang.Object" />
+			</bean>
+		</property>
+		<property name="HashKeySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+		</property>
+		<property name="HashValueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer">
+				<constructor-arg type="java.lang.Class" value="java.lang.Object" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>
